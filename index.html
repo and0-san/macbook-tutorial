@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はじめてのMacBook Air ガイド</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --primary: #007AFF;
+    --primary-light: #4DA3FF;
+    --bg: #F5F5F7;
+    --card-bg: #FFFFFF;
+    --text: #1D1D1F;
+    --text-secondary: #6E6E73;
+    --success: #34C759;
+    --warning: #FF9500;
+    --danger: #FF3B30;
+    --purple: #AF52DE;
+    --pink: #FF2D55;
+    --teal: #5AC8FA;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 40px rgba(0,0,0,0.12);
+    --radius: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,122,255,0.3) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(175,82,222,0.25) 0%, transparent 70%);
+    bottom: -100px; left: -50px;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .hero-emoji {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff, #a0c4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 16px 48px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+
+  .cta-btn:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,122,255,0.4);
+  }
+
+  /* ========== PROGRESS BAR ========== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--purple));
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    z-index: 999;
+    padding: 0 2rem;
+    display: none;
+  }
+
+  .nav.visible { display: block; }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.8rem 0;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-item {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: var(--text-secondary);
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-weight: 500;
+  }
+
+  .nav-item:hover { background: rgba(0,0,0,0.05); color: var(--text); }
+  .nav-item.active { background: var(--primary); color: white; }
+
+  /* ========== SECTIONS ========== */
+  .tutorial-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    display: none;
+  }
+
+  .tutorial-section.active { display: block; animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-icon {
+    width: 80px; height: 80px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+  }
+
+  /* ========== CARDS ========== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+  }
+
+  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+
+  .card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card p, .card li {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 2;
+  }
+
+  .card ul { padding-left: 1.2rem; }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ========== KEY VISUAL ========== */
+  .key-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .key-item {
+    background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    border-radius: 14px;
+    padding: 1.2rem;
+    text-align: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .key-item:hover {
+    border-color: var(--primary);
+    transform: scale(1.03);
+  }
+
+  .key-item .key-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .key-item .key-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .key-item .key-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  /* ========== SHORTCUT TABLE ========== */
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .shortcut-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.2rem;
+    background: #f8f8fa;
+    border-radius: 14px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .shortcut-row:hover { background: #eef2ff; transform: translateX(4px); }
+
+  .shortcut-keys {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .kbd {
+    display: inline-block;
+    padding: 4px 10px;
+    background: white;
+    border: 1px solid #d1d1d6;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 0 #d1d1d6;
+    min-width: 32px;
+    text-align: center;
+  }
+
+  .shortcut-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ========== QUIZ ========== */
+  .quiz-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    color: white;
+    margin: 2rem 0;
+  }
+
+  .quiz-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .quiz-box p { color: rgba(255,255,255,0.85); margin-bottom: 1.5rem; }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .quiz-option {
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 14px;
+    color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .quiz-option:hover { background: rgba(255,255,255,0.25); }
+  .quiz-option.correct { background: rgba(52,199,89,0.5); border-color: var(--success); }
+  .quiz-option.wrong { background: rgba(255,59,48,0.4); border-color: var(--danger); }
+
+  .quiz-result {
+    padding: 1rem;
+    border-radius: 14px;
+    font-weight: 600;
+    display: none;
+    margin-top: 1rem;
+  }
+
+  .quiz-result.show { display: block; animation: fadeIn 0.3s ease; }
+  .quiz-result.correct-result { background: rgba(52,199,89,0.2); color: #fff; }
+  .quiz-result.wrong-result { background: rgba(255,59,48,0.2); color: #fff; }
+
+  /* ========== INTERACTIVE TRACKPAD ========== */
+  .trackpad-demo {
+    width: 280px;
+    height: 200px;
+    background: linear-gradient(145deg, #e0e0e0, #c8c8c8);
+    border-radius: 16px;
+    margin: 2rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 3px solid #b0b0b0;
+    position: relative;
+    user-select: none;
+  }
+
+  .trackpad-demo:hover { background: linear-gradient(145deg, #d8d8d8, #c0c0c0); }
+
+  .trackpad-demo .trackpad-label {
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .trackpad-feedback {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+    min-height: 2rem;
+    margin-top: 1rem;
+  }
+
+  /* ========== TIP BOX ========== */
+  .tip-box {
+    background: linear-gradient(135deg, #FFF3CD, #FFF8E1);
+    border-left: 4px solid var(--warning);
+    border-radius: 0 14px 14px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .tip-box strong {
+    color: #e67e00;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .tip-box p { color: #6b5900; font-size: 0.9rem; }
+
+  .info-box {
+    background: linear-gradient(135deg, #d1ecf1, #e8f7fa);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 14px 14px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .info-box strong {
+    color: #0c7a8f;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-box p { color: #0a5e6e; font-size: 0.9rem; }
+
+  /* ========== CHECKLIST ========== */
+  .checklist { margin: 1.5rem 0; }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    user-select: none;
+  }
+
+  .check-item:hover { background: #f0f0f5; }
+
+  .check-item input[type="checkbox"] {
+    width: 22px; height: 22px;
+    accent-color: var(--success);
+    cursor: pointer;
+  }
+
+  .check-item.checked label {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+  }
+
+  .check-item label { cursor: pointer; font-size: 0.95rem; }
+
+  /* ========== BOTTOM NAV ========== */
+  .bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .nav-btn {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: 2px solid var(--primary);
+    background: white;
+    color: var(--primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+
+  .nav-btn:hover { background: var(--primary); color: white; }
+  .nav-btn.primary { background: var(--primary); color: white; }
+  .nav-btn.primary:hover { background: var(--primary-light); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* ========== COMPLETION ========== */
+  .completion-screen {
+    min-height: 80vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .completion-screen.active {
+    display: flex;
+    animation: fadeIn 0.8s ease;
+  }
+
+  .completion-badge {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--success), #28a745);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 40px rgba(52,199,89,0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 8px 40px rgba(52,199,89,0.3); }
+    50% { box-shadow: 0 8px 60px rgba(52,199,89,0.5); }
+  }
+
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: confettiFall 3s linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ========== APP GRID ========== */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  .app-item {
+    text-align: center;
+    padding: 1.2rem 0.5rem;
+    border-radius: 16px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .app-item:hover {
+    background: #f0f0f5;
+    transform: translateY(-3px);
+  }
+
+  .app-item .app-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .app-item .app-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .app-item .app-desc {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+  }
+
+  /* ========== GESTURE ANIMATION ========== */
+  .gesture-demo {
+    background: #f0f0f5;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    margin: 1rem 0;
+  }
+
+  .gesture-hand {
+    font-size: 3rem;
+    display: inline-block;
+  }
+
+  .gesture-hand.swipe-right {
+    animation: swipeRight 2s ease-in-out infinite;
+  }
+
+  .gesture-hand.swipe-up {
+    animation: swipeUp 2s ease-in-out infinite;
+  }
+
+  .gesture-hand.pinch {
+    animation: pinchAnim 2s ease-in-out infinite;
+  }
+
+  @keyframes swipeRight {
+    0%, 100% { transform: translateX(-30px); }
+    50% { transform: translateX(30px); }
+  }
+
+  @keyframes swipeUp {
+    0%, 100% { transform: translateY(15px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes pinchAnim {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 640px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .key-layout { grid-template-columns: repeat(2, 1fr); }
+    .app-grid { grid-template-columns: repeat(3, 1fr); }
+    .card { padding: 1.5rem; }
+    .tutorial-section { padding: 2rem 1rem; }
+  }
+
+  /* ========== SCORE DISPLAY ========== */
+  .score-display {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 998;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .score-display.visible { display: flex; align-items: center; gap: 8px; }
+
+  /* Image placeholders */
+  .visual-placeholder {
+    background: linear-gradient(135deg, #e8eaf6, #f3e5f5);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin: 1.5rem 0;
+    border: 2px dashed #c5cae9;
+  }
+
+  .visual-placeholder .emoji { font-size: 3rem; margin-bottom: 1rem; }
+  .visual-placeholder p { color: var(--text-secondary); font-size: 0.9rem; }
+
+  /* Comparison table */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5rem 0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .compare-table th {
+    background: var(--primary);
+    color: white;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .compare-table td {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #fafafa; }
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Score Display -->
+<div class="score-display" id="scoreDisplay">
+  <span>🏆</span> <span id="scoreText">0 ポイント</span>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-emoji">💻</div>
+    <h1>はじめてのMacBook Air<br>完全マスターガイド</h1>
+    <p>PC初心者でも大丈夫！ステップバイステップで<br>MacBook Airの使い方を楽しく覚えましょう</p>
+    <button class="cta-btn" onclick="startTutorial()">さっそく始める →</button>
+  </div>
+</section>
+
+<!-- ========== NAV ========== -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner" id="navInner"></div>
+</nav>
+
+<!-- ========== SECTIONS ========== -->
+
+<!-- SECTION 1: 電源の入れ方・初期設定 -->
+<section class="tutorial-section" data-title="電源と初期設定" data-icon="🔌" data-color="#007AFF" id="section-0">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#007AFF,#5AC8FA)">🔌</div>
+    <h2>Step 1: 電源を入れよう</h2>
+    <p>まずはMacBook Airを起動してみましょう</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="step-number">1</span> 箱から出したら</h3>
+    <ul>
+      <li>本体、充電ケーブル（USB-C）、電源アダプタが入っています</li>
+      <li>充電ケーブルを本体左側のUSB-Cポートに接続しましょう</li>
+      <li>初回は充電しながらの使用がおすすめです</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="step-number">2</span> 電源の入れ方</h3>
+    <ul>
+      <li>画面（ディスプレイ）を開くと自動的に電源が入ります</li>
+      <li>初めての場合は「ようこそ」画面が表示されます</li>
+      <li>電源が入らない場合は、右上の <strong>Touch ID ボタン</strong>を長押ししてみましょう</li>
+    </ul>
+    <div class="tip-box">
+      <strong>💡 ヒント</strong>
+      <p>Touch IDボタンはキーボード右上にある指紋認証センサー付きのボタンです。電源ボタンとしても使えます。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="step-number">3</span> 初期設定をしよう</h3>
+    <p>画面の指示に従って設定を進めます。主な設定項目：</p>
+    <ul>
+      <li><strong>言語・地域：</strong>「日本語」「日本」を選択</li>
+      <li><strong>Wi-Fi：</strong>自宅のWi-Fiを選んでパスワードを入力</li>
+      <li><strong>Apple ID：</strong>持っていなければ「新規作成」で無料で作れます</li>
+      <li><strong>Touch ID：</strong>指紋を登録すると、ロック解除がとても簡単に！</li>
+      <li><strong>パスワード：</strong>ログインパスワードを設定（忘れないようにメモ！）</li>
+    </ul>
+    <div class="info-box">
+      <strong>ℹ️ Apple IDとは？</strong>
+      <p>Appleのサービスを使うための無料アカウントです。App Store、iCloudなど、すべてこれ1つで使えます。メールアドレスがあれば作成できます。</p>
+    </div>
+  </div>
+
+  <div class="quiz-box" id="quiz-1">
+    <h3>🧩 確認クイズ</h3>
+    <p>MacBook Airの電源を入れるには？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-1')">本体の裏にある電源ボタンを押す</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-1')">ディスプレイ（画面）を開く</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-1')">充電ケーブルを接続する</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-1')">キーボードのスペースキーを押す</button>
+    </div>
+    <div class="quiz-result" id="quiz-1-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 2: 画面の見方 -->
+<section class="tutorial-section" data-title="画面の見方" data-icon="🖥️" data-color="#34C759" id="section-1">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#34C759,#30D158)">🖥️</div>
+    <h2>Step 2: 画面の見方を覚えよう</h2>
+    <p>デスクトップ画面の構成を理解しましょう</p>
+  </div>
+
+  <div class="card">
+    <h3>📍 メニューバー（画面の一番上）</h3>
+    <p>画面の最上部にある細い帯がメニューバーです。</p>
+    <ul>
+      <li><strong>🍎 Appleメニュー（左上）：</strong>システム設定、スリープ、シャットダウンなどの重要メニュー</li>
+      <li><strong>アプリ名：</strong>今使っているアプリの名前と設定メニュー</li>
+      <li><strong>右側のアイコン群：</strong>Wi-Fi、バッテリー、音量、日付・時刻など</li>
+    </ul>
+    <div class="tip-box">
+      <strong>💡 困ったときは</strong>
+      <p>左上の 🍎 マークをクリックすれば、いつでもシステム設定やシャットダウンにアクセスできます。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📍 Dock（画面の下のバー）</h3>
+    <p>画面下部に並ぶアプリのアイコン一覧が <strong>Dock</strong> です。</p>
+    <ul>
+      <li>クリックするとアプリが起動します</li>
+      <li>起動中のアプリには小さな点（ドット）が表示されます</li>
+      <li>よく使うアプリをDockに追加できます（ドラッグ＆ドロップ）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📱 最初から入っている便利なアプリ</h3>
+    <div class="app-grid">
+      <div class="app-item">
+        <div class="app-icon">🧭</div>
+        <div class="app-name">Safari</div>
+        <div class="app-desc">ブラウザ</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📧</div>
+        <div class="app-name">メール</div>
+        <div class="app-desc">メール管理</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📝</div>
+        <div class="app-name">メモ</div>
+        <div class="app-desc">メモ帳</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📅</div>
+        <div class="app-name">カレンダー</div>
+        <div class="app-desc">予定管理</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🗺️</div>
+        <div class="app-name">マップ</div>
+        <div class="app-desc">地図</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📸</div>
+        <div class="app-name">写真</div>
+        <div class="app-desc">写真管理</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🎵</div>
+        <div class="app-name">ミュージック</div>
+        <div class="app-desc">音楽再生</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">💬</div>
+        <div class="app-name">メッセージ</div>
+        <div class="app-desc">チャット</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Spotlight検索 ── 最強の検索機能</h3>
+    <p>何かを探すときは <strong>Spotlight</strong> を使いましょう！</p>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <div class="shortcut-keys">
+          <span class="kbd">⌘</span><span class="kbd">Space</span>
+        </div>
+        <span class="shortcut-label">Spotlight検索を開く</span>
+      </div>
+    </div>
+    <p>アプリ名、ファイル名、計算式、天気など何でも検索できます。<br>例：「メモ」と入力すればメモアプリが見つかります。</p>
+  </div>
+
+  <div class="quiz-box" id="quiz-2">
+    <h3>🧩 確認クイズ</h3>
+    <p>MacBook Airをシャットダウン（電源を切る）するときは、どこをクリックする？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-2')">Dockの右端</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-2')">左上の 🍎（Appleメニュー）</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-2')">Touch IDボタンを3回押す</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-2')">画面を閉じる</button>
+    </div>
+    <div class="quiz-result" id="quiz-2-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 3: トラックパッド -->
+<section class="tutorial-section" data-title="トラックパッド" data-icon="👆" data-color="#AF52DE" id="section-2">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#AF52DE,#BF5AF2)">👆</div>
+    <h2>Step 3: トラックパッドを使いこなそう</h2>
+    <p>MacBook最大の魅力！ジェスチャー操作をマスター</p>
+  </div>
+
+  <div class="card">
+    <h3>☝️ 基本操作</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <span class="shortcut-label"><strong>クリック</strong>：1本指でトンと押す</span>
+        <span>= マウスの左クリック</span>
+      </div>
+      <div class="shortcut-row">
+        <span class="shortcut-label"><strong>右クリック</strong>：2本指でトンと押す</span>
+        <span>= メニューを表示</span>
+      </div>
+      <div class="shortcut-row">
+        <span class="shortcut-label"><strong>スクロール</strong>：2本指で上下にスワイプ</span>
+        <span>= 画面を上下に動かす</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✌️ 便利なジェスチャー</h3>
+
+    <div class="gesture-demo">
+      <div class="gesture-hand swipe-right">👆👆</div>
+      <p style="margin-top:1rem;font-weight:600">2本指で左右スワイプ</p>
+      <p style="color:var(--text-secondary);font-size:0.85rem">Safariのページを「戻る / 進む」</p>
+    </div>
+
+    <div class="gesture-demo">
+      <div class="gesture-hand pinch">🤏</div>
+      <p style="margin-top:1rem;font-weight:600">ピンチ（2本指で広げる / 縮める）</p>
+      <p style="color:var(--text-secondary);font-size:0.85rem">写真やWebページを拡大・縮小</p>
+    </div>
+
+    <div class="gesture-demo">
+      <div class="gesture-hand swipe-up">👆👆👆</div>
+      <p style="margin-top:1rem;font-weight:600">3本指で上にスワイプ</p>
+      <p style="color:var(--text-secondary);font-size:0.85rem">Mission Control（全アプリ一覧）を表示</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 トラックパッドを試してみよう</h3>
+    <p>下のエリアでクリックやダブルクリックを試してみましょう！</p>
+    <div class="trackpad-demo" id="trackpadDemo">
+      <div class="trackpad-label">ここをクリック！</div>
+    </div>
+    <div class="trackpad-feedback" id="trackpadFeedback"></div>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 ドラッグ＆ドロップ</strong>
+    <p>ファイルを移動するには：1本指でファイルをクリックしたまま、指を離さずに移動先まで滑らせて指を離します。</p>
+  </div>
+
+  <div class="quiz-box" id="quiz-3">
+    <h3>🧩 確認クイズ</h3>
+    <p>右クリック（メニュー表示）をするには？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-3')">3本指でタップ</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-3')">トラックパッドの右端をクリック</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-3')">2本指でタップ</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-3')">長押し3秒</button>
+    </div>
+    <div class="quiz-result" id="quiz-3-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 4: キーボード -->
+<section class="tutorial-section" data-title="キーボード" data-icon="⌨️" data-color="#FF9500" id="section-3">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#FF9500,#FF6B00)">⌨️</div>
+    <h2>Step 4: キーボードを覚えよう</h2>
+    <p>Macのキーボードには特別なキーがあります</p>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Mac特有のキーを覚えよう</h3>
+    <p>Windowsとは少し違うキーがあります。まずはこの4つを覚えましょう！</p>
+    <div class="key-layout">
+      <div class="key-item">
+        <div class="key-icon">⌘</div>
+        <div class="key-name">Command</div>
+        <div class="key-desc">Windowsの「Ctrl」に相当する最重要キー</div>
+      </div>
+      <div class="key-item">
+        <div class="key-icon">⌥</div>
+        <div class="key-name">Option</div>
+        <div class="key-desc">Windowsの「Alt」に相当</div>
+      </div>
+      <div class="key-item">
+        <div class="key-icon">⌃</div>
+        <div class="key-name">Control</div>
+        <div class="key-desc">Macにもあるが使い方が異なる</div>
+      </div>
+      <div class="key-item">
+        <div class="key-icon">🌐</div>
+        <div class="key-name">Fn / Globe</div>
+        <div class="key-desc">絵文字入力・ファンクションキー切替</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ 絶対覚えたいショートカット</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">C</span></div>
+        <span class="shortcut-label">コピー</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">V</span></div>
+        <span class="shortcut-label">貼り付け（ペースト）</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">X</span></div>
+        <span class="shortcut-label">切り取り</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Z</span></div>
+        <span class="shortcut-label">元に戻す（やり直し）</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">A</span></div>
+        <span class="shortcut-label">全選択</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">S</span></div>
+        <span class="shortcut-label">保存</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Q</span></div>
+        <span class="shortcut-label">アプリを終了</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">W</span></div>
+        <span class="shortcut-label">ウィンドウ（タブ）を閉じる</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Tab</span></div>
+        <span class="shortcut-label">アプリの切り替え</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Space</span></div>
+        <span class="shortcut-label">Spotlight検索</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 WindowsとMacの対応表</h3>
+    <table class="compare-table">
+      <tr><th>操作</th><th>Windows</th><th>Mac</th></tr>
+      <tr><td>コピー</td><td>Ctrl + C</td><td>⌘ + C</td></tr>
+      <tr><td>貼り付け</td><td>Ctrl + V</td><td>⌘ + V</td></tr>
+      <tr><td>元に戻す</td><td>Ctrl + Z</td><td>⌘ + Z</td></tr>
+      <tr><td>保存</td><td>Ctrl + S</td><td>⌘ + S</td></tr>
+      <tr><td>全選択</td><td>Ctrl + A</td><td>⌘ + A</td></tr>
+      <tr><td>アプリ切替</td><td>Alt + Tab</td><td>⌘ + Tab</td></tr>
+      <tr><td>検索</td><td>Windows + S</td><td>⌘ + Space</td></tr>
+    </table>
+    <div class="tip-box">
+      <strong>💡 覚えるコツ</strong>
+      <p>Windowsの「Ctrl」をそのまま「⌘（Command）」に置き換えるだけ！ほとんどのショートカットはこれでOKです。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌐 日本語入力の切り替え</h3>
+    <ul>
+      <li>キーボード左下の <strong>🌐（Globe）</strong> キーを押すと入力モードが切り替わります</li>
+      <li><strong>英数キー</strong>（スペースの左）→ 英語入力</li>
+      <li><strong>かなキー</strong>（スペースの右）→ 日本語入力</li>
+      <li>🌐キー長押しで絵文字パレットが開きます 😊</li>
+    </ul>
+  </div>
+
+  <div class="quiz-box" id="quiz-4">
+    <h3>🧩 確認クイズ</h3>
+    <p>Macでコピーするショートカットキーは？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-4')">Ctrl + C</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-4')">⌘（Command）+ C</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-4')">Option + C</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-4')">Fn + C</button>
+    </div>
+    <div class="quiz-result" id="quiz-4-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 5: Finder（ファイル管理） -->
+<section class="tutorial-section" data-title="ファイル管理" data-icon="📁" data-color="#FF2D55" id="section-4">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#FF2D55,#FF6482)">📁</div>
+    <h2>Step 5: ファイルを管理しよう</h2>
+    <p>Finder（ファインダー）はMacのファイル管理アプリです</p>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ Finderとは？</h3>
+    <p>WindowsでいうところのExplorer（エクスプローラー）です。ファイルやフォルダを管理します。</p>
+    <ul>
+      <li>DockのニコニコマークのアイコンがFinderです</li>
+      <li>クリックするとFinderウィンドウが開きます</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📍 よく使うフォルダ</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <span class="shortcut-label">🖥️ <strong>デスクトップ</strong></span>
+        <span>画面上に表示されるファイル置き場</span>
+      </div>
+      <div class="shortcut-row">
+        <span class="shortcut-label">📥 <strong>ダウンロード</strong></span>
+        <span>ネットから保存したファイル</span>
+      </div>
+      <div class="shortcut-row">
+        <span class="shortcut-label">📄 <strong>書類</strong></span>
+        <span>作成した文書などの保管場所</span>
+      </div>
+      <div class="shortcut-row">
+        <span class="shortcut-label">📸 <strong>ピクチャ</strong></span>
+        <span>画像ファイルの保管場所</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✨ Finderの便利な操作</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">N</span></div>
+        <span class="shortcut-label">新しいFinderウィンドウを開く</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Shift</span><span class="kbd">N</span></div>
+        <span class="shortcut-label">新しいフォルダを作成</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Delete</span></div>
+        <span class="shortcut-label">ゴミ箱に移動</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">Space</span></div>
+        <span class="shortcut-label">クイックルック（ファイルをプレビュー）</span>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 クイックルックが超便利！</strong>
+      <p>ファイルを選んでスペースキーを押すだけで、アプリを開かずに中身をプレビューできます。PDF、画像、動画もOK！</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>☁️ iCloudとは？</h3>
+    <p>Appleの無料クラウドストレージ（5GBまで無料）です。</p>
+    <ul>
+      <li>「デスクトップ」と「書類」をiCloudと同期すれば、iPhoneやiPadからもアクセスできます</li>
+      <li>Finderのサイドバーに「iCloud Drive」が表示されます</li>
+      <li>🍎メニュー → システム設定 → Apple ID → iCloud で設定できます</li>
+    </ul>
+  </div>
+
+  <div class="quiz-box" id="quiz-5">
+    <h3>🧩 確認クイズ</h3>
+    <p>ファイルを開かずに中身をプレビューするには？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-5')">ファイルをダブルクリック</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-5')">右クリック →「プレビュー」</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-5')">ファイルを選んでSpaceキー</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-5')">⌘ + P を押す</button>
+    </div>
+    <div class="quiz-result" id="quiz-5-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 6: Safari & インターネット -->
+<section class="tutorial-section" data-title="インターネット" data-icon="🌐" data-color="#5AC8FA" id="section-5">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#5AC8FA,#007AFF)">🌐</div>
+    <h2>Step 6: インターネットを使おう</h2>
+    <p>Safariブラウザの基本的な使い方</p>
+  </div>
+
+  <div class="card">
+    <h3>🧭 Safariの基本</h3>
+    <ul>
+      <li>DockのコンパスアイコンがSafariです</li>
+      <li>画面上部のアドレスバーにURLやキーワードを入力して検索</li>
+      <li>Google検索もアドレスバーから直接できます</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📑 タブの使い方</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">T</span></div>
+        <span class="shortcut-label">新しいタブを開く</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">W</span></div>
+        <span class="shortcut-label">タブを閉じる</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">L</span></div>
+        <span class="shortcut-label">アドレスバーにフォーカス</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">R</span></div>
+        <span class="shortcut-label">ページを再読み込み</span>
+      </div>
+    </div>
+    <p>タブを使えば、複数のWebページを同時に開いておけます。</p>
+  </div>
+
+  <div class="card">
+    <h3>🔒 安全にインターネットを使うために</h3>
+    <ul>
+      <li>URLが <strong>https://</strong> で始まるサイトは暗号化されていて安全です（鍵マーク🔒が表示）</li>
+      <li>怪しいサイトでは個人情報を入力しないようにしましょう</li>
+      <li>「パスワードを保存しますか？」と聞かれたら「保存」を選ぶと、次回から自動入力できます</li>
+      <li>Safariの「プライベートブラウズ」を使うと閲覧履歴が残りません（⌘ + Shift + N）</li>
+    </ul>
+    <div class="info-box">
+      <strong>ℹ️ パスワード管理</strong>
+      <p>Macには「パスワード」アプリが内蔵されています。パスワードを安全に保存・管理でき、Touch IDで簡単にログインできます。</p>
+    </div>
+  </div>
+
+  <div class="quiz-box" id="quiz-6">
+    <h3>🧩 確認クイズ</h3>
+    <p>Safariで新しいタブを開くショートカットは？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-6')">⌘ + N</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-6')">⌘ + T</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-6')">⌘ + Tab</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-6')">Option + T</button>
+    </div>
+    <div class="quiz-result" id="quiz-6-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 7: App Store & アプリ管理 -->
+<section class="tutorial-section" data-title="アプリ管理" data-icon="🛒" data-color="#FF9500" id="section-6">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#FF9500,#FFCC00)">🛒</div>
+    <h2>Step 7: アプリを追加しよう</h2>
+    <p>App Storeで新しいアプリをインストール</p>
+  </div>
+
+  <div class="card">
+    <h3>🏪 App Storeからインストール</h3>
+    <ul>
+      <li>DockまたはSpotlightから「App Store」を開く</li>
+      <li>検索バーでアプリ名を入力</li>
+      <li>「入手」ボタンをクリック → Apple IDのパスワード or Touch IDで認証</li>
+      <li>無料アプリは「入手」、有料アプリは価格が表示されます</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🌟 おすすめ無料アプリ</h3>
+    <div class="app-grid">
+      <div class="app-item">
+        <div class="app-icon">📊</div>
+        <div class="app-name">Numbers</div>
+        <div class="app-desc">表計算（Excel的）</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📝</div>
+        <div class="app-name">Pages</div>
+        <div class="app-desc">文書作成（Word的）</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📽️</div>
+        <div class="app-name">Keynote</div>
+        <div class="app-desc">プレゼン（PPT的）</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🎬</div>
+        <div class="app-name">iMovie</div>
+        <div class="app-desc">動画編集</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🎵</div>
+        <div class="app-name">GarageBand</div>
+        <div class="app-desc">音楽制作</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">💬</div>
+        <div class="app-name">LINE</div>
+        <div class="app-desc">メッセンジャー</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>💡 知ってた？</strong>
+      <p>Pages、Numbers、KeynoteはApple純正の無料オフィスアプリ。Microsoft Officeのファイルも開けます！</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗑️ アプリの削除</h3>
+    <ul>
+      <li><strong>方法1：</strong>Launchpad（ロケットアイコン）を開き、アプリアイコンを長押し → ×ボタンで削除</li>
+      <li><strong>方法2：</strong>Finderの「アプリケーション」フォルダからゴミ箱にドラッグ</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔄 アプリのアップデート</h3>
+    <p>App Storeの左下「アップデート」をクリックすると、利用可能なアップデートが表示されます。セキュリティのためにも、定期的にアップデートしましょう。</p>
+  </div>
+</section>
+
+<!-- SECTION 8: スクリーンショット & 便利機能 -->
+<section class="tutorial-section" data-title="便利機能" data-icon="✨" data-color="#34C759" id="section-7">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#34C759,#00C7BE)">✨</div>
+    <h2>Step 8: 便利機能をマスターしよう</h2>
+    <p>知っていると差がつく便利テクニック集</p>
+  </div>
+
+  <div class="card">
+    <h3>📸 スクリーンショット</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Shift</span><span class="kbd">3</span></div>
+        <span class="shortcut-label">画面全体のスクショ</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Shift</span><span class="kbd">4</span></div>
+        <span class="shortcut-label">範囲を選択してスクショ</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Shift</span><span class="kbd">5</span></div>
+        <span class="shortcut-label">スクショメニュー（録画もOK）</span>
+      </div>
+    </div>
+    <p>撮影したスクリーンショットはデスクトップに自動保存されます。</p>
+  </div>
+
+  <div class="card">
+    <h3>🌙 おやすみモード / 集中モード</h3>
+    <ul>
+      <li>メニューバー右上のコントロールセンター → 集中モード</li>
+      <li>「おやすみモード」をオンにすると通知がオフになります</li>
+      <li>作業や勉強に集中したいときに便利！</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔋 バッテリーを長持ちさせるコツ</h3>
+    <ul>
+      <li>画面の明るさを下げる（キーボード上部の明るさキーで調整）</li>
+      <li>使わないアプリは ⌘ + Q で終了</li>
+      <li>Bluetoothを使わないときはオフに</li>
+      <li>「バッテリー充電の最適化」を有効に（システム設定 → バッテリー）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔀 Split View（画面分割）</h3>
+    <p>2つのアプリを左右に並べて作業できます！</p>
+    <ul>
+      <li>ウィンドウ左上の緑ボタンを長押し</li>
+      <li>「画面左側にタイル表示」または「画面右側にタイル表示」を選択</li>
+      <li>もう一方に表示したいアプリを選択</li>
+    </ul>
+    <div class="tip-box">
+      <strong>💡 活用例</strong>
+      <p>左にSafariで調べ物、右にメモでまとめる、といった使い方が便利です！</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎙️ Siri（音声アシスタント）</h3>
+    <ul>
+      <li>「Hey Siri」と話しかけるか、Touch IDボタンを長押し</li>
+      <li>「明日の天気は？」「タイマー5分」「〇〇を検索」など話しかけるだけ</li>
+    </ul>
+  </div>
+
+  <div class="quiz-box" id="quiz-7">
+    <h3>🧩 確認クイズ</h3>
+    <p>画面の一部だけをスクリーンショットするには？</p>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-7')">⌘ + Shift + 3</button>
+      <button class="quiz-option" onclick="checkQuiz(this, true, 'quiz-7')">⌘ + Shift + 4</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-7')">⌘ + Shift + S</button>
+      <button class="quiz-option" onclick="checkQuiz(this, false, 'quiz-7')">Print Screenキー</button>
+    </div>
+    <div class="quiz-result" id="quiz-7-result"></div>
+  </div>
+</section>
+
+<!-- SECTION 9: トラブルシューティング -->
+<section class="tutorial-section" data-title="困ったときは" data-icon="🆘" data-color="#FF3B30" id="section-8">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#FF3B30,#FF6482)">🆘</div>
+    <h2>Step 9: 困ったときの対処法</h2>
+    <p>よくあるトラブルと解決方法</p>
+  </div>
+
+  <div class="card">
+    <h3>😵 アプリが固まった（フリーズ）</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">Q</span></div>
+        <span class="shortcut-label">まずはこれで終了を試す</span>
+      </div>
+      <div class="shortcut-row">
+        <div class="shortcut-keys"><span class="kbd">⌘</span><span class="kbd">⌥</span><span class="kbd">Esc</span></div>
+        <span class="shortcut-label">強制終了メニューを表示</span>
+      </div>
+    </div>
+    <p>強制終了メニューで固まったアプリを選び、「強制終了」ボタンをクリックします。</p>
+  </div>
+
+  <div class="card">
+    <h3>🐌 動作が遅いとき</h3>
+    <ul>
+      <li>使っていないアプリを終了する（⌘ + Q）</li>
+      <li>Macを再起動する（🍎メニュー → 再起動）</li>
+      <li>ストレージ容量を確認（🍎 → このMacについて → ストレージ）</li>
+      <li>macOSを最新版にアップデート</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📶 Wi-Fiに繋がらない</h3>
+    <ul>
+      <li>メニューバーのWi-Fiアイコンをクリック → Wi-Fiをオフ/オンにする</li>
+      <li>正しいWi-Fiネットワークに接続されているか確認</li>
+      <li>Wi-Fiルーターを再起動する</li>
+      <li>システム設定 → Wi-Fi → ネットワークを選択し直す</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔄 macOSアップデートのやり方</h3>
+    <ul>
+      <li>🍎メニュー → システム設定 → 一般 → ソフトウェアアップデート</li>
+      <li>アップデートがあれば「今すぐアップデート」をクリック</li>
+      <li>アップデート中はMacが再起動します。充電ケーブルを接続しておきましょう</li>
+    </ul>
+    <div class="info-box">
+      <strong>ℹ️ 自動アップデート</strong>
+      <p>「自動アップデート」をオンにしておくと、重要なセキュリティアップデートが自動で適用されます。初心者にはオンをおすすめします。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💾 Time Machine（バックアップ）</h3>
+    <p>外付けハードディスクをつなぐだけで、自動バックアップができます。</p>
+    <ul>
+      <li>外付けHDD/SSDを接続すると「Time Machineに使いますか？」と表示</li>
+      <li>「使用する」を選ぶだけで自動バックアップが開始</li>
+      <li>万が一のデータ消失に備えられる、超重要な機能です</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== COMPLETION SCREEN ========== -->
+<section class="completion-screen" id="completionScreen">
+  <div class="completion-badge">🎉</div>
+  <h2 style="font-size:2rem;margin-bottom:1rem">おめでとうございます！</h2>
+  <p style="font-size:1.1rem;color:var(--text-secondary);margin-bottom:0.5rem">全レッスンを完了しました！</p>
+  <p style="font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:2rem" id="finalScore">スコア: 0 / 7</p>
+
+  <div class="card" style="max-width:500px;text-align:left">
+    <h3>📋 次のステップ</h3>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>Touch IDに指紋を登録する</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>Wi-Fiに接続する</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>Apple IDを作成/ログインする</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>Safariでお気に入りのサイトを開く</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>⌘ + C / ⌘ + V を練習する</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>App Storeでアプリを1つインストール</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox"><label>スクリーンショットを撮ってみる</label>
+      </div>
+    </div>
+  </div>
+
+  <button class="cta-btn" style="margin-top:2rem" onclick="restartTutorial()">もう一度最初から</button>
+</section>
+
+<!-- ========== CONFETTI CONTAINER ========== -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+  // ===== STATE =====
+  const sections = document.querySelectorAll('.tutorial-section');
+  const totalSections = sections.length;
+  let currentSection = 0;
+  let score = 0;
+  let answeredQuizzes = new Set();
+  let tutorialStarted = false;
+
+  // ===== SECTION DATA =====
+  const sectionData = [];
+  sections.forEach((s, i) => {
+    sectionData.push({
+      title: s.dataset.title,
+      icon: s.dataset.icon
+    });
+  });
+
+  // ===== BUILD NAV =====
+  function buildNav() {
+    const nav = document.getElementById('navInner');
+    nav.innerHTML = '';
+    sectionData.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-item' + (i === currentSection ? ' active' : '');
+      btn.textContent = s.icon + ' ' + s.title;
+      btn.onclick = () => goToSection(i);
+      nav.appendChild(btn);
+    });
+  }
+
+  // ===== NAVIGATION =====
+  function startTutorial() {
+    tutorialStarted = true;
+    document.getElementById('hero').style.display = 'none';
+    document.getElementById('mainNav').classList.add('visible');
+    document.getElementById('scoreDisplay').classList.add('visible');
+    buildNav();
+    showSection(0);
+  }
+
+  function showSection(index) {
+    sections.forEach(s => s.classList.remove('active'));
+    sections[index].classList.add('active');
+    document.getElementById('completionScreen').classList.remove('active');
+    currentSection = index;
+    updateProgress();
+    updateNav();
+    addBottomNav(index);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goToSection(index) {
+    if (index >= 0 && index < totalSections) {
+      showSection(index);
+    }
+  }
+
+  function updateNav() {
+    const items = document.querySelectorAll('.nav-item');
+    items.forEach((item, i) => {
+      item.classList.toggle('active', i === currentSection);
+    });
+  }
+
+  function updateProgress() {
+    const pct = ((currentSection + 1) / totalSections) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function addBottomNav(index) {
+    // Remove existing bottom navs
+    document.querySelectorAll('.bottom-nav').forEach(n => n.remove());
+
+    const section = sections[index];
+    const nav = document.createElement('div');
+    nav.className = 'bottom-nav';
+
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'nav-btn';
+    prevBtn.textContent = '← 前へ';
+    prevBtn.disabled = index === 0;
+    prevBtn.onclick = () => goToSection(index - 1);
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'nav-btn primary';
+    nextBtn.textContent = index === totalSections - 1 ? '完了！ 🎉' : '次へ →';
+    nextBtn.onclick = () => {
+      if (index === totalSections - 1) {
+        showCompletion();
+      } else {
+        goToSection(index + 1);
+      }
+    };
+
+    nav.appendChild(prevBtn);
+    nav.appendChild(nextBtn);
+    section.appendChild(nav);
+  }
+
+  // ===== QUIZ =====
+  function checkQuiz(btn, isCorrect, quizId) {
+    if (answeredQuizzes.has(quizId)) return;
+    answeredQuizzes.add(quizId);
+
+    const quizBox = document.getElementById(quizId);
+    const options = quizBox.querySelectorAll('.quiz-option');
+    const resultDiv = document.getElementById(quizId + '-result');
+
+    options.forEach(opt => {
+      opt.style.pointerEvents = 'none';
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      resultDiv.textContent = '🎉 正解！すばらしい！';
+      resultDiv.className = 'quiz-result show correct-result';
+      score++;
+      updateScore();
+    } else {
+      btn.classList.add('wrong');
+      // Highlight correct answer
+      options.forEach(opt => {
+        if (opt.onclick.toString().includes('true')) {
+          opt.classList.add('correct');
+        }
+      });
+      resultDiv.textContent = '😅 おしい！正解は緑色のものです。覚えておきましょう！';
+      resultDiv.className = 'quiz-result show wrong-result';
+    }
+  }
+
+  function updateScore() {
+    document.getElementById('scoreText').textContent = score + ' ポイント';
+  }
+
+  // ===== TRACKPAD DEMO =====
+  const trackpad = document.getElementById('trackpadDemo');
+  const feedback = document.getElementById('trackpadFeedback');
+  let clickCount = 0;
+  let clickTimer = null;
+
+  trackpad.addEventListener('click', (e) => {
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => {
+      if (clickCount === 1) {
+        feedback.textContent = '👆 クリック！ いい感じです！';
+        feedback.style.color = 'var(--primary)';
+      } else if (clickCount === 2) {
+        feedback.textContent = '👆👆 ダブルクリック！ ファイルを開くときに使います！';
+        feedback.style.color = 'var(--success)';
+      } else {
+        feedback.textContent = '👆×' + clickCount + ' すごいクリック速度！';
+        feedback.style.color = 'var(--purple)';
+      }
+      clickCount = 0;
+    }, 350);
+  });
+
+  trackpad.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    feedback.textContent = '✌️ 右クリック成功！ メニューが表示されましたね！';
+    feedback.style.color = 'var(--warning)';
+  });
+
+  // ===== COMPLETION =====
+  function showCompletion() {
+    sections.forEach(s => s.classList.remove('active'));
+    const comp = document.getElementById('completionScreen');
+    comp.classList.add('active');
+    document.getElementById('finalScore').textContent = 'クイズスコア: ' + score + ' / 7 正解';
+    document.getElementById('progressFill').style.width = '100%';
+    launchConfetti();
+  }
+
+  function restartTutorial() {
+    score = 0;
+    answeredQuizzes.clear();
+    updateScore();
+    // Reset all quizzes
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+      opt.classList.remove('correct', 'wrong');
+      opt.style.pointerEvents = '';
+    });
+    document.querySelectorAll('.quiz-result').forEach(r => {
+      r.className = 'quiz-result';
+      r.textContent = '';
+    });
+    showSection(0);
+  }
+
+  // ===== CONFETTI =====
+  function launchConfetti() {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#FF3B30', '#FF9500', '#FFCC00', '#34C759', '#007AFF', '#AF52DE', '#FF2D55'];
+    for (let i = 0; i < 80; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 2 + 's';
+      confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      confetti.style.width = (6 + Math.random() * 8) + 'px';
+      confetti.style.height = (6 + Math.random() * 8) + 'px';
+      container.appendChild(confetti);
+    }
+    setTimeout(() => { container.innerHTML = ''; }, 5000);
+  }
+
+  // ===== CHECKLIST =====
+  function toggleCheck(item) {
+    const cb = item.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    item.classList.toggle('checked', cb.checked);
+  }
+</script>
+
+</body>
+</html>
